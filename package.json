@@ -1,0 +1,27 @@
+{
+  "name": "fung",
+  "version": "1.0.0",
+  "description": "building new projects from remote repertory",
+  "main": "index.js",
+  "bin": {
+    "fung": "bin/fung.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Leechikit/fung.git"
+  },
+  "author": "leechikit",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Leechikit/fung/issues"
+  },
+  "homepage": "https://github.com/Leechikit/fung#readme",
+  "devDependencies": {
+    "chalk": "^2.1.0",
+    "commander": "^2.11.0",
+    "inquirer": "^3.3.0"
+  }
+}
