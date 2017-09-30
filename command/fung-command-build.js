@@ -4,8 +4,11 @@ const fs = require('fs');
 const _ = require('lodash');
 const chalk = require('chalk');
 const exec = require('child_process').exec;
+const pullBranch = require('../lib/pullBranch');
+const copyFolder = require('../lib/copyFolder');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
+const currDir = process.cwd();
 
 exports.register = function (commander) {
     commander
@@ -31,10 +34,11 @@ exports.register = function (commander) {
                     .value();
                 // 参数设置的分支存在
                 if (list.indexOf(option.branch) > -1) {
-                    exec(`git checkout ${option.branch}`, { cwd: gitDir }, (err, stdout, stderr) => {
-                        exec(`git pull ${repertory} ${option.branch}`, { cwd: gitDir }, (err, stdout, stderr) => {
-                            console.log(`${option.branch} 构建成功`);
-                        });
+                    pullBranch({
+                        repertory,
+                        branch: option.branch
+                    }).then(() => {
+                        console.log(`${option.branch} 构建成功`);
                     });
                 } else {
                     promps.push({
@@ -45,11 +49,14 @@ exports.register = function (commander) {
                     })
                 }
                 promps.length > 0 && inquirer.prompt(promps).then(function (answers) {
-                    exec(`git checkout ${answers.branches}`, { cwd: gitDir }, (err, stdout, stderr) => {
-                        exec(`git pull ${repertory} ${answers.branches}`, { cwd: gitDir }, (err, stdout, stderr) => {
-                            console.log(`${answers.branches} 构建成功`);
-                        });
+                    pullBranch({
+                        repertory,
+                        branch: answers.branches
+                    }).then(() => {
+                        console.log(`${answers.branches} 构建成功`);
                     });
+
+                    copyFolder(gitDir, currDir);
                 })
             })
         })
