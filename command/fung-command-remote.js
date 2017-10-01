@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const path = require("path");
 const fs = require('fs');
-const exec = require('child_process').exec;
+const exec = require('../lib/exec');
 const deleteFolder = require('../lib/deleteFolder');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
@@ -23,9 +23,6 @@ exports.register = function (commander) {
                     console.log('写入成功');
                 }
             });
-            exec(`git clone ${option} ${gitDir}`, (err, stdout, stderr) => {
-                if (err) throw err;
-
-            })
+            exec(`git clone ${option} ${gitDir}`);
         })
 }
