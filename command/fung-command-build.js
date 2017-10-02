@@ -52,21 +52,26 @@ exports.register = function (commander) {
                             choices: _.map(list, item => { return { name: item, value: item } })
                         })
                     }
-                    promps.length > 0 && inquirer.prompt(promps).then(function (answers) {
+                    promps.length > 0 && inquirer.prompt(promps).then((answers) => {
                         pullBranch({
                             repertory,
                             branch: answers.branches
-                        }).then(()=>{
-                            let config = formatConfig(gitDir);
-                            config.length > 0 && inquirer.prompt(config);
                         }).then(() => {
-                            //copyFolder(gitDir, currDir);
-                            
+                            let config = formatConfig(gitDir);
+                            let result;
+                            if (config.length > 0) {
+                                result = inquirer.prompt(config)
+                            } else {
+                                result = Promise.resolve();
+                            }
+                            return result;
+                        }).then((result) => {
+                            copyFolder(gitDir, currDir, result);
                             //console.log(`${answers.branches} 构建成功`);
                         });
                     });
                 })
-                .catch((err)=>{
+                .catch((err) => {
                     console.log(err);
                 });
         });
