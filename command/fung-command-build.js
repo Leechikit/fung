@@ -6,6 +6,7 @@ const chalk = require('chalk');
 const exec = require('../lib/exec');
 const pullBranch = require('../lib/pullBranch');
 const copyFolder = require('../lib/copyFolder');
+const formatConfig = require('../lib/formatConfig');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
 const currDir = process.cwd();
@@ -55,11 +56,18 @@ exports.register = function (commander) {
                         pullBranch({
                             repertory,
                             branch: answers.branches
+                        }).then(()=>{
+                            let config = formatConfig(gitDir);
+                            config.length > 0 && inquirer.prompt(config);
                         }).then(() => {
-                            copyFolder(gitDir, currDir);
-                            console.log(`${answers.branches} 构建成功`);
+                            //copyFolder(gitDir, currDir);
+                            
+                            //console.log(`${answers.branches} 构建成功`);
                         });
                     });
+                })
+                .catch((err)=>{
+                    console.log(err);
                 });
         });
 }
