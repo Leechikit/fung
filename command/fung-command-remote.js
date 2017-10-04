@@ -2,7 +2,7 @@ const _ = require('lodash');
 const path = require("path");
 const fs = require('fs');
 const exec = require('../lib/exec');
-const deleteFolder = require('../lib/deleteFolder');
+const emptyFolder = require('../lib/emptyFolder');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
 
@@ -12,8 +12,7 @@ exports.register = function (commander) {
         .description('设置远程仓库')
         .action(option => {
             
-            deleteFolder(gitDir);
-            fs.mkdirSync(gitDir);
+            emptyFolder(gitDir);
             
             // 写入仓库地址
             fs.writeFile(repertoryFile, new Buffer(option), (err) => {

@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require('fs');
 const exec = require('../lib/exec');
-const deleteFolder = require('../lib/deleteFolder');
+const emptyFolder = require('../lib/emptyFolder');
 const copyFolder = require('../lib/copyFolder');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
@@ -16,9 +16,12 @@ exports.register = function (commander) {
         .action(option => {
             let repertory = option.remote || fs.readFileSync(repertoryFile, 'utf8');
             let branchName = option.branch || path.basename(currDir);
-            deleteFolder(gitDir);
-            copyFolder(currDir, gitDir);
-            exec(`git push ${repertory} :${branchName}`)
+            exec(`git checkout -b ${branchName}`)
+                .then(() => {
+                    emptyFolder(gitDir, ['.git', '.gitignore']);
+                    copyFolder(currDir, gitDir);
+                })
+                .then(exec.bind(null, `git push ${repertory} ${branchName}`))
                 .then((stdout) => {
                     console.log('推送成功')
                 })
