@@ -19,9 +19,11 @@ exports.register = function (commander) {
             exec(`git checkout -b ${branchName}`)
                 .then(() => {
                     emptyFolder(gitDir, ['.git', '.gitignore']);
-                    // copyFolder(currDir, gitDir);
+                    copyFolder(currDir, gitDir);
                 })
-                .then(exec.bind(null, `git push ${repertory} ${branchName}`))
+                // .then(exec.bind(null, 'git add .'))
+                // .then(exec.bind(null, 'git commit -m "update"'))
+                // .then(exec.bind(null, `git push ${repertory} ${branchName}`))
                 .then((stdout) => {
                     console.log('推送成功')
                 })
