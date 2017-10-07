@@ -11,7 +11,9 @@ exports.register = function (commander) {
         .command('remote [repertory]')
         .description('设置远程仓库')
         .action(option => {
-            
+            if(!fs.existsSync(gitDir)){
+                fs.mkdirSync(gitDir);
+            }
             emptyFolder(gitDir);
             
             // 写入仓库地址
@@ -23,5 +25,6 @@ exports.register = function (commander) {
                 }
             });
             exec(`git clone ${option} ${gitDir}`);
+            
         })
 }
