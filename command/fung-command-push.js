@@ -21,9 +21,17 @@ exports.register = function (commander) {
                     emptyFolder(gitDir, ['.git', '.gitignore']);
                     copyFolder(currDir, gitDir);
                 })
+                .then(()=>{
+                    return new Promise((resolve,reject)=>{
+                        setTimeout(()=>{
+                            exec('git add .');
+                            resolve();
+                        },3000);
+                    });
+                })
                 // .then(exec.bind(null, 'git add .'))
-                // .then(exec.bind(null, 'git commit -m "update"'))
-                // .then(exec.bind(null, `git push ${repertory} ${branchName}`))
+                .then(exec.bind(null, 'git commit -m "update"'))
+                .then(exec.bind(null, `git push ${repertory} ${branchName}`))
                 .then((stdout) => {
                     console.log('推送成功')
                 })
