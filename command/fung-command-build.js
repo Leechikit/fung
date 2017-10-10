@@ -5,11 +5,48 @@ const _ = require('lodash');
 const chalk = require('chalk');
 const exec = require('../lib/exec');
 const pullBranch = require('../lib/pullBranch');
-const copyFolder = require('../lib/copyFolder');
+const copyToTarget = require('../lib/copyToTarget');
 const formatConfig = require('../lib/formatConfig');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
 const currDir = process.cwd();
+let promise = null;
+
+/**
+* 复制项目
+*
+* @param: {type} name description
+* @return: {type} description
+*/
+function copyProject(branchName) {
+    pullBranch({
+        repertoryFile,
+        branch: branchName
+    }).then(() => {
+        let config = formatConfig(gitDir);
+        let result;
+        if (config.length > 0) {
+            result = inquirer.prompt(config)
+        } else {
+            result = Promise.resolve();
+        }
+        return result;
+    }).then((result) => {
+        return new Promise((resolve, reject) => {
+            copyToTarget(gitDir, currDir, result, (result) => {
+                if (result == 0) {
+                    resolve();
+                } else {
+                    reject();
+                }
+            });
+        })
+    }).then(() => {
+        console.log(`${branchName} 构建成功`);
+    }).catch((err) => {
+        console.log(err);
+    });
+}
 
 exports.register = function (commander) {
     commander
@@ -37,39 +74,18 @@ exports.register = function (commander) {
                         .value();
                     // 参数设置的分支存在
                     if (list.indexOf(option.branch) > -1) {
-                        pullBranch({
-                            repertory,
-                            branch: option.branch
-                        }).then(() => {
-                            copyFolder(gitDir, currDir);
-                            console.log(`${option.branch} 构建成功`);
-                        });
+                        copyProject(option.branch);
                     } else {
                         promps.push({
                             type: 'list',
                             name: 'branches',
                             message: '请选择构建的分支',
                             choices: _.map(list, item => { return { name: item, value: item } })
-                        })
-                    }
-                    promps.length > 0 && inquirer.prompt(promps).then((answers) => {
-                        pullBranch({
-                            repertory,
-                            branch: answers.branches
-                        }).then(() => {
-                            let config = formatConfig(gitDir);
-                            let result;
-                            if (config.length > 0) {
-                                result = inquirer.prompt(config)
-                            } else {
-                                result = Promise.resolve();
-                            }
-                            return result;
-                        }).then((result) => {
-                            copyFolder(gitDir, currDir, result);
-                            //console.log(`${answers.branches} 构建成功`);
                         });
-                    });
+                        inquirer.prompt(promps).then((answers) => {
+                            copyProject(answers.branches);
+                        });
+                    }
                 })
                 .catch((err) => {
                     console.log(err);

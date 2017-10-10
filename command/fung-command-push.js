@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require('fs');
 const exec = require('../lib/exec');
 const emptyFolder = require('../lib/emptyFolder');
-const copyFolder = require('../lib/copyFolder');
+const copyToGit = require('../lib/copyToGit');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
 const currDir = process.cwd();
@@ -18,18 +18,18 @@ exports.register = function (commander) {
             let branchName = option.branch || path.basename(currDir);
             exec(`git checkout -b ${branchName}`)
                 .then(() => {
-                    emptyFolder(gitDir, ['.git', '.gitignore']);
-                    copyFolder(currDir, gitDir);
+                    return new Promise((resolve, reject) => {
+                        emptyFolder(gitDir, ['.git', '.gitignore']);
+                        copyToGit(currDir, gitDir, [], (result) => {
+                            if (result == 0) {
+                                resolve();
+                            } else {
+                                reject(result);
+                            }
+                        });
+                    })
                 })
-                .then(()=>{
-                    return new Promise((resolve,reject)=>{
-                        setTimeout(()=>{
-                            exec('git add .');
-                            resolve();
-                        },3000);
-                    });
-                })
-                // .then(exec.bind(null, 'git add .'))
+                .then(exec.bind(null, 'git add .'))
                 .then(exec.bind(null, 'git commit -m "update"'))
                 .then(exec.bind(null, `git push ${repertory} ${branchName}`))
                 .then((stdout) => {
