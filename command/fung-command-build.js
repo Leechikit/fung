@@ -20,7 +20,7 @@ let promise = null;
 */
 function copyProject(branchName) {
     pullBranch({
-        repertoryFile,
+        repertory: repertoryFile,
         branch: branchName
     }).then(() => {
         let config = formatConfig(gitDir);
