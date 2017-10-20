@@ -18,16 +18,8 @@ exports.register = function (commander) {
             let branchName = option.branch || path.basename(currDir);
             exec(`git checkout -b ${branchName}`)
                 .then(() => {
-                    return new Promise((resolve, reject) => {
-                        emptyFolder(gitDir, ['.git', '.gitignore']);
-                        copyToGit(currDir, gitDir, [], (result) => {
-                            if (result == 0) {
-                                resolve();
-                            } else {
-                                reject(result);
-                            }
-                        });
-                    })
+                    emptyFolder(gitDir, ['.git', '.gitignore']);
+                    return copyToGit(currDir, gitDir);
                 })
                 .then(exec.bind(null, 'git add .'))
                 .then(exec.bind(null, 'git commit -m "update"'))

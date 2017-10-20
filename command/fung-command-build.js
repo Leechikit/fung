@@ -32,15 +32,7 @@ function copyProject(branchName) {
         }
         return result;
     }).then((result) => {
-        return new Promise((resolve, reject) => {
-            copyToTarget(gitDir, currDir, result, (result) => {
-                if (result == 0) {
-                    resolve();
-                } else {
-                    reject();
-                }
-            });
-        })
+        return copyToTarget(gitDir, currDir, result);
     }).then(() => {
         console.log(`${branchName} 构建成功`);
     }).catch((err) => {
