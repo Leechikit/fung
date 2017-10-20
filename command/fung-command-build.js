@@ -7,6 +7,7 @@ const exec = require('../lib/exec');
 const pullBranch = require('../lib/pullBranch');
 const copyToTarget = require('../lib/copyToTarget');
 const formatConfig = require('../lib/formatConfig');
+const isEmptyFolder = require('../lib/isEmptyFolder');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
 const currDir = process.cwd();
@@ -47,6 +48,10 @@ exports.register = function (commander) {
         .option('-r, --remote [repertory]', '远程仓库')
         .description('构建项目')
         .action(option => {
+            if(!isEmptyFolder(currDir)){
+                console.log('此目录不为空，无法构建项目！');
+                return;
+            }
             exec('git remote update')
                 .then(exec.bind(null, 'git remote prune origin'))
                 .then(exec.bind(null, 'git branch -r'))
