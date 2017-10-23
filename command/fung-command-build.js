@@ -19,9 +19,9 @@ let promise = null;
 * @param: {type} name description
 * @return: {type} description
 */
-function copyProject(branchName) {
+function copyProject(repertory, branchName) {
     pullBranch({
-        repertory: repertoryFile,
+        repertory,
         branch: branchName
     }).then(() => {
         let config = formatConfig(gitDir);
@@ -48,7 +48,7 @@ exports.register = function (commander) {
         .option('-r, --remote [repertory]', '远程仓库')
         .description('构建项目')
         .action(option => {
-            if(!isEmptyFolder(currDir)){
+            if (!isEmptyFolder(currDir)) {
                 console.log('此目录不为空，无法构建项目！');
                 return;
             }
@@ -71,7 +71,7 @@ exports.register = function (commander) {
                         .value();
                     // 参数设置的分支存在
                     if (list.indexOf(option.branch) > -1) {
-                        copyProject(option.branch);
+                        copyProject(repertory, option.branch);
                     } else {
                         promps.push({
                             type: 'list',
@@ -80,7 +80,7 @@ exports.register = function (commander) {
                             choices: _.map(list, item => { return { name: item, value: item } })
                         });
                         inquirer.prompt(promps).then((answers) => {
-                            copyProject(answers.branches);
+                            copyProject(repertory, answers.branches);
                         });
                     }
                 })
