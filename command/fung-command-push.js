@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require('fs');
+const _ = require('lodash');
 const exec = require('../lib/exec');
 const emptyFolder = require('../lib/emptyFolder');
 const copyToGit = require('../lib/copyToGit');
@@ -16,7 +17,40 @@ exports.register = function (commander) {
         .action(option => {
             let repertory = option.remote || fs.readFileSync(repertoryFile, 'utf8');
             let branchName = option.branch || path.basename(currDir);
-            exec(`git checkout -b ${branchName}`)
+            exec('git remote update')
+                .then(exec.bind(null, 'git remote prune origin'))
+                .then(exec.bind(null, 'git branch -r'))
+                .then((stdout) => {
+                    return new Promise((resolve, reject) => {
+                        let list = String.prototype.split.call(stdout, '\n');
+                        list = _.chain(list)
+                            .map(item => {
+                                return item.replace(/.*origin\/(\S+)/, "$1");
+                            })
+                            .filter(item => {
+                                return _.trim(item) != '' && item != 'master';
+                            })
+                            .uniq()
+                            .value();
+                        if (list.indexOf(branchName) > 0) {
+                            reject('此模板名称已经存在！');
+                        } else {
+                            resolve();
+                        }
+                    });
+                })
+                .then(exec.bind(null, 'git branch'))
+                .then((stdout) => {
+                    let list = String.prototype.split.call(stdout, '\n');
+                    list = list.map(item => {
+                        return item.replace(/\**\s*\**(\S+)/, "$1");
+                    });
+                    if (list.indexOf(branchName) > 0) {
+                        return exec(`git checkout master`)
+                                .then(exec.bind(null, `git branch -D ${branchName}`))
+                    }
+                })
+                .then(exec.bind(null, `git checkout -b ${branchName}`))                                
                 .then(() => {
                     emptyFolder(gitDir, ['.git', '.gitignore']);
                     return copyToGit(currDir, gitDir);
