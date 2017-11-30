@@ -52,8 +52,11 @@ exports.register = function (commander) {
                 console.log('此目录不为空，无法构建项目！');
                 return;
             }
+            // 在本地创建远程追踪分支
             exec('git remote update')
+                // 删除本地版本库上那些失效的远程追踪分支
                 .then(exec.bind(null, 'git remote prune origin'))
+                // 列出所有被跟踪的远程分支
                 .then(exec.bind(null, 'git branch -r'))
                 .then((stdout) => {
                     let repertory = option.remote || fs.readFileSync(repertoryFile, 'utf8');
