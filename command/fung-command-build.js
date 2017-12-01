@@ -37,7 +37,7 @@ function copyProject(repertory, branchName) {
     }).then(() => {
         log.green(`${branchName} 构建成功`);
     }).catch((err) => {
-        console.log(err);
+        log.error(err);
     });
 }
 
