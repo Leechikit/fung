@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const exec = require('../lib/exec');
+const log = require('../lib/log');
 
 exports.register = function (commander) {
     commander
@@ -21,7 +22,7 @@ exports.register = function (commander) {
                         })
                         .uniq()
                         .value();
-                    console.log(list.join('\n'));
+                    log.cyan(list.join('\n'));
                 });
         });
 }

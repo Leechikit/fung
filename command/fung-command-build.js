@@ -2,12 +2,12 @@ const inquirer = require('inquirer');
 const path = require("path");
 const fs = require('fs');
 const _ = require('lodash');
-const chalk = require('chalk');
 const exec = require('../lib/exec');
 const pullBranch = require('../lib/pullBranch');
 const copyToTarget = require('../lib/copyToTarget');
 const formatConfig = require('../lib/formatConfig');
 const isEmptyFolder = require('../lib/isEmptyFolder');
+const log = require('../lib/log');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
 const currDir = process.cwd();
@@ -35,7 +35,7 @@ function copyProject(repertory, branchName) {
     }).then((result) => {
         return copyToTarget(gitDir, currDir, result);
     }).then(() => {
-        console.log(`${branchName} 构建成功`);
+        log.green(`${branchName} 构建成功`);
     }).catch((err) => {
         console.log(err);
     });
@@ -49,7 +49,7 @@ exports.register = function (commander) {
         .description('构建项目')
         .action(option => {
             if (!isEmptyFolder(currDir)) {
-                console.log('此目录不为空，无法构建项目！');
+                log.error('此目录不为空，无法构建项目！');
                 return;
             }
             // 在本地创建远程追踪分支
@@ -88,7 +88,7 @@ exports.register = function (commander) {
                     }
                 })
                 .catch((err) => {
-                    console.log(err);
+                    log.error(err);
                 });
         });
 }
