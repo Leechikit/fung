@@ -2,7 +2,7 @@ const _ = require('lodash');
 const path = require("path");
 const fs = require('fs');
 const exec = require('../lib/exec');
-const emptyFolder = require('../lib/emptyFolder');
+const emptyFolder = require('../lib/empty-folder');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
 

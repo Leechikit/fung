@@ -2,8 +2,8 @@ const path = require("path");
 const fs = require('fs');
 const _ = require('lodash');
 const exec = require('../lib/exec');
-const emptyFolder = require('../lib/emptyFolder');
-const copyToGit = require('../lib/copyToGit');
+const emptyFolder = require('../lib/empty-folder');
+const copyToCache = require('../lib/copy-to-cache');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
 const currDir = process.cwd();
@@ -53,7 +53,7 @@ exports.register = function (commander) {
                 .then(exec.bind(null, `git checkout -b ${branchName}`))                                
                 .then(() => {
                     emptyFolder(gitDir, ['.git', '.gitignore']);
-                    return copyToGit(currDir, gitDir);
+                    return copyToCache(currDir, gitDir);
                 })
                 .then(exec.bind(null, 'git add .'))
                 .then(exec.bind(null, 'git commit -m "update"'))
