@@ -2,7 +2,7 @@ const replace = require('../lib/replace.js');
 const expect = require('chai').expect;
 const config = {
     apple: 1,
-    orange: 2,
+    orange: 2
 }
 
 describe('test replace function', function () {
@@ -11,13 +11,24 @@ describe('test replace function', function () {
         expect(replace(template, config)).to.be.equal('<div>1</div>');
     });
 
-    it('multiple replace situation', function () {
+    it('multiple different replace situation', function () {
         const template = 
         `<div>{{apple}}</div>
         <div>{{orange}}</div>`;
         expect(replace(template, config)).to.be.equal(
         `<div>1</div>
         <div>2</div>`);
+    });
+
+    it('multiple same replace situation', function () {
+        const template = 
+        `<div>{{apple}}</div>
+        <div>{{apple}}{{apple}}</div>
+        <div>{{apple}}{{apple}}{{apple}}</div>`;
+        expect(replace(template, config)).to.be.equal(
+        `<div>1</div>
+        <div>11</div>
+        <div>111</div>`);
     });
 
     it('not standard template situation', function () {
