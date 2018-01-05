@@ -5,7 +5,7 @@ const config = {
     orange: 2
 }
 
-describe('test replace function', function () {
+describe.only('test replace function', function () {
     it('normal situation', function () {
         const template = '<div>{{apple}}</div>';
         expect(replace(template, config)).to.be.equal('<div>1</div>');
