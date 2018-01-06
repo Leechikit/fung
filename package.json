@@ -22,14 +22,16 @@
   "engines": {
     "node": ">=6.4.0"
   },
-  "devDependencies": {
-    "chai": "^4.1.2",
+  "dependencies": {
     "chalk": "^2.3.0",
     "commander": "^2.12.2",
     "inquirer": "^3.3.0",
     "lodash": "^4.17.4",
-    "mocha": "^4.0.1",
-    "mochawesome": "^3.0.0",
     "through2": "^2.0.3"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "mochawesome": "^3.0.0"
   }
 }
