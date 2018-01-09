@@ -1,5 +1,12 @@
 # Fung
 
+[![npm][npm]][npm-url]
+
+[![node][node]][node-url]
+[![downloads][downloads]][downloads-url]
+[![builds][builds]][builds-url]
+[![licenses][licenses]][licenses-url]
+
 ## What is Fung?
 
 一个远程构建项目结构工具。
@@ -83,3 +90,18 @@ fung build [projectName]
 
 ### fung push
 提交新的项目模板到项目模板仓库。
+
+[npm]: https://img.shields.io/npm/v/fung.svg
+[npm-url]: https://npmjs.com/package/fung
+
+[node]: https://img.shields.io/node/v/fung.svg
+[node-url]: https://nodejs.org
+
+[downloads]: https://img.shields.io/npm/dm/fung.svg
+[downloads-url]: https://www.npmjs.com/package/fung
+
+[builds-url]: https://ci.appveyor.com/project/sokra/webpack/branch/master
+[builds]: https://ci.appveyor.com/api/projects/status/github/webpack/webpack?svg=true
+
+[licenses]: https://img.shields.io/npm/l/fung.svg
+[licenses-url]: https://www.npmjs.com/package/fung
