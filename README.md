@@ -99,7 +99,7 @@ fung build [projectName]
 [downloads]: https://img.shields.io/npm/dm/fung.svg
 [downloads-url]: https://www.npmjs.com/package/fung
 
-[builds]: https://img.shields.io/travis/leechikit/fung.svg
+[builds]: https://api.travis-ci.org/Leechikit/fung.svg?branch=master
 [builds-url]: https://travis-ci.org/Leechikit/fung
 
 [licenses]: https://img.shields.io/npm/l/fung.svg
