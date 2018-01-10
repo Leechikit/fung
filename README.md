@@ -1,7 +1,6 @@
 # Fung
 
 [![npm][npm]][npm-url]
-
 [![node][node]][node-url]
 [![downloads][downloads]][downloads-url]
 [![builds][builds]][builds-url]
