@@ -99,8 +99,8 @@ fung build [projectName]
 [downloads]: https://img.shields.io/npm/dm/fung.svg
 [downloads-url]: https://www.npmjs.com/package/fung
 
-[builds-url]: https://ci.appveyor.com/project/sokra/webpack/branch/master
-[builds]: https://ci.appveyor.com/api/projects/status/github/webpack/webpack?svg=true
+[builds]: https://img.shields.io/travis/leechikit/fung.svg
+[builds-url]: https://travis-ci.org/Leechikit/fung
 
 [licenses]: https://img.shields.io/npm/l/fung.svg
 [licenses-url]: https://www.npmjs.com/package/fung
