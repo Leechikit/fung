@@ -10,8 +10,8 @@ const currDir = process.cwd();
 
 exports.register = function (commander) {
     commander
-        .command('push')
-        .option('-b, --branch [branchName]', '分支名称')
+        .command('push [branchName]')
+        .option('-a, --name [branchName]', '分支名称')
         .option('-r, --remote [repertory]', '远程仓库')
         .description('推送目录')
         .action(option => {

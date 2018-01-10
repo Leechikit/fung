@@ -10,4 +10,7 @@ command_remote.register(commander);
 command_list.register(commander);
 command_build.register(commander);
 command_push.register(commander);
-commander.parse(process.argv)
+
+commander
+    .version('0.1.0')
+    .parse(process.argv)

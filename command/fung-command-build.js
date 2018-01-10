@@ -43,8 +43,8 @@ function copyProject(repertory, branchName) {
 
 exports.register = function (commander) {
     commander
-        .command('build')
-        .option('-b, --branch [branchName]', '分支名称')
+        .command('build [branchName]')
+        .option('-a, --name [branchName]', '分支名称')
         .option('-r, --remote [repertory]', '远程仓库')
         .description('构建项目')
         .action(option => {
