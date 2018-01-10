@@ -12,5 +12,5 @@ command_build.register(commander);
 command_push.register(commander);
 
 commander
-    .version('0.1.0')
+    .version('0.1.1')
     .parse(process.argv)
