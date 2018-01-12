@@ -2,6 +2,7 @@ const _ = require('lodash');
 const path = require("path");
 const fs = require('fs');
 const exec = require('../lib/exec');
+const log = require('../lib/log');
 const emptyFolder = require('../lib/empty-folder');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
@@ -9,19 +10,19 @@ const repertoryFile = path.resolve(__dirname, '../config/repertory');
 exports.register = function (commander) {
     commander
         .command('remote [repertory]')
-        .description('设置远程仓库')
+        .description('define a remote repertory')
         .action(option => {
             if(!fs.existsSync(gitDir)){
                 fs.mkdirSync(gitDir);
             }
             emptyFolder(gitDir);
             
-            // 写入仓库地址
+            // save repertory url
             fs.writeFile(repertoryFile, new Buffer(option), (err) => {
                 if (err) {
-                    console.error(err);
+                    log.error(err);
                 } else {
-                    console.log('写入成功');
+                    log.green('success to define a remote repertory');
                 }
             });
             exec(`git clone ${option} ${gitDir}`);

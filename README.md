@@ -45,22 +45,22 @@ Define a remote repertory.
 List all templates in your own remote repertory.
 
 ### fung build
-Build a project in your own remote repertory.
+Generate a project from your own remote repertory.
 
 **Options**
 
-* `--template`or`-t`: Print a template name.
-* `--project`or`-p`: Print a project name.
-* `--remote`or`-r`: Print a remote repertory url.
+* `--template` or `-t`: Print a template name.
+* `--project` or `-p`: Print a project name.
+* `--remote` or `-r`: Print a remote repertory url.
 
 ### fung push
 Commit a new template to your own remote repertory.
 
 **Options**
 
-* `--template`or`-t`: Print a template name.
-* `--project`or`-p`: Print a project name.
-* `--remote`or`-r`: Print a remote repertory url.
+* `--template` or `-t`: Print a template name.
+* `--project` or `-p`: Print a project name.
+* `--remote` or `-r`: Print a remote repertory url.
 
 [npm]: https://img.shields.io/npm/v/fung.svg
 [npm-url]: https://npmjs.com/package/fung
