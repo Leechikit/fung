@@ -5,7 +5,7 @@ const log = require('../lib/log');
 exports.register = function (commander) {
     commander
         .command('list')
-        .description('列出所有远程仓库')
+        .description('list all templates')
         .action(option => {
             exec('git remote update')
                 .then(exec.bind(null, 'git remote prune origin'))

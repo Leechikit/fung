@@ -36,7 +36,7 @@ function copyProject(repertory, branchName) {
         return result;
     }).then((result) => {
         if (fs.existsSync(currDir)) {
-            emptyFolder(currDir);
+            // emptyFolder(currDir);
         } else {
             fs.mkdirSync(currDir);
         }
