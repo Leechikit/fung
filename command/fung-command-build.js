@@ -19,12 +19,12 @@ let promise = null;
 * @param: {String} repertory
 * @return: {String} branchName
 */
-function copyProject(repertory, branchName) {
+async function copyProject(repertory, branchName) {
+    let config = await formatConfig(gitDir);
     pullBranch({
         repertory,
         branch: branchName
-    }).then(async () => {
-        let config = await formatConfig(gitDir);
+    }).then(() => {
         let prompts = config.prompts;
         let result;
         if (prompts.length > 0) {
@@ -35,14 +35,16 @@ function copyProject(repertory, branchName) {
         return result;
     }).then((result) => {
         const templateDir = path.join(gitDir, 'template');
-        if (fs.existsSync(currDir)) {
-            // emptyFolder(currDir);
-        } else {
+        if (!fs.existsSync(currDir)) {
             fs.mkdirSync(currDir);
         }
         return copyToTarget(templateDir, currDir, result);
     }).then(() => {
-        log.green(`${branchName} build success`);
+        if(config.completeMessage != void 0){
+            log.green(config.completeMessage);
+        }else{
+            log.green(`${branchName} build success`);
+        }
     }).catch((err) => {
         log.error(err);
     });
@@ -95,7 +97,7 @@ exports.register = function (commander) {
                         promps.push({
                             type: 'list',
                             name: 'branches',
-                            message: 'choose one fung generator',
+                            message: 'choose one fung template',
                             choices: _.map(list, item => { return { name: item, value: item } })
                         });
                         const answers = await inquirer.prompt(promps);
