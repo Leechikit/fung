@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require('fs');
 const exec = require('../lib/exec');
 const log = require('../lib/log');
-const emptyFolder = require('../lib/empty-folder');
+const emptyDirectory = require('../lib/empty-directory');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
 
@@ -15,7 +15,7 @@ exports.register = function (commander) {
             if(!fs.existsSync(gitDir)){
                 fs.mkdirSync(gitDir);
             }
-            emptyFolder(gitDir);
+            emptyDirectory(gitDir);
             
             // save repertory url
             fs.writeFile(repertoryFile, new Buffer(option), (err) => {

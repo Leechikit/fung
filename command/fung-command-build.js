@@ -6,9 +6,7 @@ const exec = require('../lib/exec');
 const pullBranch = require('../lib/pull-branch');
 const copyToTarget = require('../lib/copy-to-target');
 const formatConfig = require('../lib/format-config');
-const isEmptyFolder = require('../lib/is-empty-folder');
-const createFolder = require('../lib/create-folder');
-const emptyFolder = require('../lib/empty-folder');
+const createDirectory = require('../lib/create-directory');
 const log = require('../lib/log');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
@@ -25,22 +23,24 @@ function copyProject(repertory, branchName) {
     pullBranch({
         repertory,
         branch: branchName
-    }).then(() => {
-        let config = formatConfig(gitDir);
+    }).then(async () => {
+        let config = await formatConfig(gitDir);
+        let prompts = config.prompts;
         let result;
-        if (config.length > 0) {
-            result = inquirer.prompt(config)
+        if (prompts.length > 0) {
+            result = inquirer.prompt(prompts)
         } else {
             result = Promise.resolve();
         }
         return result;
     }).then((result) => {
+        const templateDir = path.join(gitDir, 'template');
         if (fs.existsSync(currDir)) {
             // emptyFolder(currDir);
         } else {
             fs.mkdirSync(currDir);
         }
-        return copyToTarget(gitDir, currDir, result);
+        return copyToTarget(templateDir, currDir, result);
     }).then(() => {
         log.green(`${branchName} build success`);
     }).catch((err) => {
@@ -74,7 +74,7 @@ exports.register = function (commander) {
                     let list = String.prototype.split.call(stdout, '\n');
                     let choices = [];
                     let promps = [];
-                    const isContinue = await createFolder(currDir, config.project);
+                    const isContinue = await createDirectory(currDir, config.project);
                     if (!isContinue) return;
                     list = _.chain(list)
                         .map(item => {
