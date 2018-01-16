@@ -20,7 +20,8 @@ let promise = null;
 * @return: {String} branchName
 */
 async function copyProject(repertory, branchName) {
-    let config = await formatConfig(gitDir);
+    const projectName = path.basename(currDir);
+    let config = await formatConfig(gitDir, projectName);
     pullBranch({
         repertory,
         branch: branchName
@@ -40,10 +41,10 @@ async function copyProject(repertory, branchName) {
         }
         return copyToTarget(templateDir, currDir, result);
     }).then(() => {
-        if(config.completeMessage != void 0){
-            log.green(config.completeMessage);
-        }else{
-            log.green(`${branchName} build success`);
+        if (config.completeMessage != void 0) {
+            log.gray(config.completeMessage);
+        } else {
+            log.gray(`${branchName} build success`);
         }
     }).catch((err) => {
         log.error(err);
@@ -101,7 +102,7 @@ exports.register = function (commander) {
                             choices: _.map(list, item => { return { name: item, value: item } })
                         });
                         const answers = await inquirer.prompt(promps);
-                        await copyProject(config.repertory, answers.branches);
+                        await copyProject(config, answers.branches);
                     }
                 })
                 .catch((err) => {
