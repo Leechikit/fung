@@ -10,7 +10,7 @@
 
 Fung helps you to kickstart new projects from a remote repertory,lets you quickly set up a project with sensible defaults and best practices.
 
-To do so,you need to create a remote repertory that contains templates.read more informations about fung templates.
+To do so,you need to create a remote repertory that contains templates.read more informations about [fung templates][fung-templates].
 
 ## Install
 
@@ -76,3 +76,5 @@ Commit a new template to your own remote repertory.
 
 [licenses]: https://img.shields.io/npm/l/fung.svg
 [licenses-url]: https://www.npmjs.com/package/fung
+
+[fung-templates]: https://github.com/Leechikit/fung-templates/blob/webpack-simple/README.md
