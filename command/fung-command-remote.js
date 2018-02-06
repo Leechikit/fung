@@ -6,26 +6,28 @@ const log = require('../lib/log');
 const emptyDirectory = require('../lib/empty-directory');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
+const ora = require('ora');
+const spinner = ora();
 
 exports.register = function (commander) {
     commander
         .command('remote [repertory]')
         .description('define a remote repertory')
         .action(option => {
+            spinner.start('saving a remote repertory');
             if(!fs.existsSync(gitDir)){
                 fs.mkdirSync(gitDir);
             }
             emptyDirectory(gitDir);
             
             // save repertory url
-            fs.writeFile(repertoryFile, new Buffer(option), (err) => {
+            fs.writeFile(repertoryFile, new Buffer(option), async (err) => {
                 if (err) {
                     log.error(err);
                 } else {
-                    log.green('success to define a remote repertory');
+                    await exec(`git clone ${option} ${gitDir}`);
+                    spinner.succeed('success to define a remote repertory');
                 }
             });
-            exec(`git clone ${option} ${gitDir}`);
-            
         })
 }

@@ -2,6 +2,8 @@ const inquirer = require('inquirer');
 const path = require("path");
 const fs = require('fs');
 const _ = require('lodash');
+const ora = require('ora');
+const spinner = ora();
 const exec = require('../lib/exec');
 const pullBranch = require('../lib/pull-branch');
 const copyToTarget = require('../lib/copy-to-target');
@@ -25,10 +27,12 @@ async function copyProject(repertory, branchName) {
     let config = await formatConfig(gitDir, projectName);
     let prompts = config.prompts;
     let result;
+    spinner.start('downing template');
     await pullBranch({
         repertory,
         branch: branchName
     });
+    spinner.succeed();
     if (prompts && prompts.length > 0) {
         result = await inquirer.prompt(prompts);
     }
@@ -57,19 +61,20 @@ exports.register = function (commander) {
                 project: null,
                 repertory: fs.readFileSync(repertoryFile, 'utf8')
             }, { template, project }, option);
+            const isContinue = await createDirectory(currDir, config.project);
+            if (!isContinue) return;
+            spinner.start('updating templates');
             // 在本地创建远程追踪分支
             await exec('git remote update');
             // 删除本地版本库上那些失效的远程追踪分支
             await exec('git remote prune origin');
             // 列出所有被跟踪的远程分支
             let stdout = await exec('git branch -r');
-
+            spinner.succeed();
             let targetDir = currDir;
             let list = String.prototype.split.call(stdout, '\n');
             let choices = [];
             let promps = [];
-            const isContinue = await createDirectory(currDir, config.project);
-            if (!isContinue) return;
             list = _.chain(list)
                 .map(item => {
                     return item.replace(/.*origin\/(\S+)/, "$1");
@@ -89,7 +94,7 @@ exports.register = function (commander) {
                 promps.push({
                     type: 'list',
                     name: 'branches',
-                    message: 'choose one fung template',
+                    message: 'Choose one fung template',
                     choices: _.map(list, item => { return { name: item, value: item } })
                 });
                 const answers = await inquirer.prompt(promps);
