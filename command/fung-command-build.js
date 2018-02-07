@@ -13,7 +13,6 @@ const log = require('../lib/log');
 const gitDir = path.resolve(__dirname, '../git');
 const repertoryFile = path.resolve(__dirname, '../config/repertory');
 var currDir = process.cwd();
-let promise = null;
 
 /**
 * copy project
@@ -24,15 +23,13 @@ let promise = null;
 async function copyProject(repertory, branchName) {
     const projectName = path.basename(currDir);
     const templateDir = path.join(gitDir, 'template');
-    let config = await formatConfig(gitDir, projectName);
-    let prompts = config.prompts;
     let result;
-    spinner.start('downing template');
     await pullBranch({
         repertory,
         branch: branchName
     });
-    spinner.succeed();
+    let config = await formatConfig(gitDir, projectName);
+    let prompts = config.prompts;
     if (prompts && prompts.length > 0) {
         result = await inquirer.prompt(prompts);
     }
@@ -56,12 +53,12 @@ exports.register = function (commander) {
         .option('-r, --remote <repertory>', 'print a remote repertory url')
         .description('build a project')
         .action(async (template, project, option) => {
-            const config = _.assign({
+            const setting = _.assign({
                 template: null,
                 project: null,
                 repertory: fs.readFileSync(repertoryFile, 'utf8')
             }, { template, project }, option);
-            const isContinue = await createDirectory(currDir, config.project);
+            const isContinue = await createDirectory(currDir, setting.project);
             if (!isContinue) return;
             spinner.start('updating templates');
             // 在本地创建远程追踪分支
@@ -71,7 +68,6 @@ exports.register = function (commander) {
             // 列出所有被跟踪的远程分支
             let stdout = await exec('git branch -r');
             spinner.succeed();
-            let targetDir = currDir;
             let list = String.prototype.split.call(stdout, '\n');
             let choices = [];
             let promps = [];
@@ -84,21 +80,21 @@ exports.register = function (commander) {
                 })
                 .uniq()
                 .value();
-            if (config.project) {
-                currDir = path.join(currDir, config.project);
+            if (setting.project) {
+                currDir = path.join(currDir, setting.project);
             }
             // 参数设置的分支存在
-            if (list.indexOf(config.template) > -1) {
-                await copyProject(config.repertory, config.template);
+            if (list.indexOf(setting.template) > -1) {
+                await copyProject(setting.repertory, setting.template);
             } else {
                 promps.push({
                     type: 'list',
-                    name: 'branches',
+                    name: 'template',
                     message: 'Choose one fung template',
                     choices: _.map(list, item => { return { name: item, value: item } })
                 });
                 const answers = await inquirer.prompt(promps);
-                await copyProject(config, answers.branches);
+                await copyProject(setting.repertory, answers.template);
             }
         });
 }
