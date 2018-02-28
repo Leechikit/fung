@@ -11,10 +11,10 @@ command_list.register(commander);
 command_build.register(commander);
 
 commander
-    .version('0.1.4')
+    .version('0.1.5')
     .parse(process.argv);
 
 process.on('unhandledRejection', err => {
-    log.error(err);
+    log.red(err);
     process.exit();
 });
