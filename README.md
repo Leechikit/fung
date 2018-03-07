@@ -6,6 +6,8 @@
 [![npm][npm]][npm-url]
 [![licenses][licenses]][licenses-url]
 
+[中文文档](https://github.com/Leechikit/fung/blob/master/README-cn.md)
+
 ## What is Fung?
 
 Fung helps you to kickstart new projects from a remote repertory,lets you quickly set up a project with sensible defaults and best practices.
