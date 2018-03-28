@@ -23,7 +23,7 @@ exports.register = function (commander) {
             // save repertory url
             fs.writeFile(repertoryFile, new Buffer(option), async (err) => {
                 if (err) {
-                    log.error(err);
+                    throw err;
                 } else {
                     await exec(`git clone ${option} ${gitDir}`);
                     spinner.succeed('success to define a remote repertory');

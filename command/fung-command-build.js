@@ -83,9 +83,13 @@ exports.register = function (commander) {
             if (setting.project) {
                 currDir = path.join(currDir, setting.project);
             }
-            // 参数设置的分支存在
-            if (list.indexOf(setting.template) > -1) {
-                await copyProject(setting.repertory, setting.template);
+            if (setting.template) {
+                // 参数设置的分支存在
+                if (list.indexOf(setting.template) > -1) {
+                    await copyProject(setting.repertory, setting.template);
+                } else {
+                    throw new Error('can not find this template in remote repertory');
+                }
             } else {
                 promps.push({
                     type: 'list',

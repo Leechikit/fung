@@ -11,7 +11,7 @@ command_list.register(commander);
 command_build.register(commander);
 
 commander
-    .version('0.1.5')
+    .version('0.1.6')
     .parse(process.argv);
 
 process.on('unhandledRejection', err => {
