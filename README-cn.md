@@ -77,4 +77,4 @@ Commit a new template to your own remote repertory.
 [licenses]: https://img.shields.io/npm/l/fung.svg
 [licenses-url]: https://www.npmjs.com/package/fung
 
-[fung-templates]: https://github.com/Leechikit/fung-templates/blob/webpack-simple/README.md
+[fung-templates]: https://github.com/Leechikit/fung-templates/blob/master/README.md
