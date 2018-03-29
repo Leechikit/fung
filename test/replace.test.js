@@ -1,6 +1,7 @@
 const replace = require('../lib/replace.js');
 const expect = require('chai').expect;
 const config = {
+    food: true,
     apple: 1,
     orange: 2
 }
@@ -39,5 +40,10 @@ describe('test replace function', function () {
     it('template is not match with config', function(){
         const template = '<div>{{sheep}}</div>';
         expect(replace(template, config)).to.be.equal('<div>{{sheep}}</div>');
+    });
+
+    it('conditional operator', function(){
+        const template = '<div>{{food?apple:orange}}</div>';
+        expect(replace(template, config)).to.be.equal('<div>1</div>');
     });
 });
