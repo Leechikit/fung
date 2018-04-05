@@ -61,4 +61,9 @@ describe('test replace function', function () {
         const template = '<div>{{!food || orange}}</div>';
         expect(replace(template, config)).to.be.equal('<div>2</div>');
     });
+
+    it('javasript operator', function(){
+        const template = `<div><%if(true){%>1111<%}else{%>2222<%}%></div>`;
+        expect(replace(template, config)).to.be.equal('<div>1111</div>');
+    });
 });
