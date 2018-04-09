@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "lodash.template": "^4.4.0",
+    "handlebars": "^4.0.11",
     "mocha": "^4.0.1",
     "mochawesome": "^3.0.0",
     "ora": "^1.4.0"

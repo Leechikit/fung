@@ -39,31 +39,11 @@ describe('test replace function', function () {
 
     it('template is not match with config', function(){
         const template = '<div>{{sheep}}</div>';
-        expect(replace(template, config)).to.be.equal('<div>{{sheep}}</div>');
+        expect(replace(template, config)).to.be.equal('<div></div>');
     });
 
     it('conditional operator', function(){
-        const template = '<div>{{food?"test/"+apple:orange}}</div>';
-        expect(replace(template, config)).to.be.equal('<div>test/1</div>');
-    });
-
-    it('Logical AND operator', function(){
-        const template = '<div>{{food && apple}}</div>';
-        expect(replace(template, config)).to.be.equal('<div>1</div>');
-    });
-
-    it('Logical OR operator', function(){
-        const template = '<div>{{food || apple}}</div>';
-        expect(replace(template, config)).to.be.equal('<div>true</div>');
-    });
-
-    it('Logical NOT operator', function(){
-        const template = '<div>{{!food || orange}}</div>';
-        expect(replace(template, config)).to.be.equal('<div>2</div>');
-    });
-
-    it('javasript operator', function(){
-        const template = `<div><%if(true){%>1111<%}else{%>2222<%}%></div>`;
+        const template = `<div>{{#food}}1111{{else}}2222{{/food}}</div>`;
         expect(replace(template, config)).to.be.equal('<div>1111</div>');
     });
 });
