@@ -1,6 +1,6 @@
 {
   "name": "fung",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "building new projects from remote repertory",
   "main": "index.js",
   "bin": {
