@@ -27,13 +27,13 @@
     "commander": "^2.12.2",
     "inquirer": "^3.3.0",
     "lodash": "^4.17.4",
-    "through2": "^2.0.3"
+    "through2": "^2.0.3",
+    "handlebars": "^4.0.11",
+    "ora": "^1.4.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "handlebars": "^4.0.11",
     "mocha": "^4.0.1",
-    "mochawesome": "^3.0.0",
-    "ora": "^1.4.0"
+    "mochawesome": "^3.0.0"
   }
 }
