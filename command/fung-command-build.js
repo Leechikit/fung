@@ -60,10 +60,13 @@ exports.register = function (commander) {
             const isContinue = await createDirectory(currDir, setting.project);
             if (!isContinue) return;
             spinner.start('updating templates');
-            if (!setting.repertory) {
-                throw new Error('you need to define a remote repertory');
-            }else{
-                await exec(`git clone ${setting.repertory} ${gitDir}`);
+            if (!fs.existsSync(gitDir)) {
+                fs.mkdirSync(gitDir);
+                if (!setting.repertory) {
+                    throw new Error('you need to define a remote repertory');
+                } else {
+                    await exec(`git clone ${setting.repertory} ${gitDir}`);
+                }
             }
             // 在本地创建远程追踪分支
             await exec('git remote update');
