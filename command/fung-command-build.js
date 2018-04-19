@@ -50,7 +50,6 @@ exports.register = function (commander) {
         .arguments('[template] [project]')
         .option('-t, --template <template>', 'prrint a template name')
         .option('-p, --project <project>', 'prrint a project name')
-        .option('-r, --remote <repertory>', 'print a remote repertory url')
         .description('build a project')
         .action(async (template, project, option) => {
             const setting = _.assign({
@@ -60,6 +59,9 @@ exports.register = function (commander) {
             }, { template, project }, option);
             const isContinue = await createDirectory(currDir, setting.project);
             if (!isContinue) return;
+            if (!setting.repertory) {
+                throw new Error('you need to define a remote repertory');
+            }
             spinner.start('updating templates');
             // 在本地创建远程追踪分支
             await exec('git remote update');
