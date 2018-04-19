@@ -59,10 +59,12 @@ exports.register = function (commander) {
             }, { template, project }, option);
             const isContinue = await createDirectory(currDir, setting.project);
             if (!isContinue) return;
+            spinner.start('updating templates');
             if (!setting.repertory) {
                 throw new Error('you need to define a remote repertory');
+            }else{
+                await exec(`git clone ${setting.repertory} ${gitDir}`);
             }
-            spinner.start('updating templates');
             // 在本地创建远程追踪分支
             await exec('git remote update');
             // 删除本地版本库上那些失效的远程追踪分支
